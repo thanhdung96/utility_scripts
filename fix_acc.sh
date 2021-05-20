@@ -5,12 +5,25 @@
 
 if [ $# -eq 1 ]; then
 	if [ -d $1 ]; then
-		echo "this is a directory."
+		# if it is a directory and it is not empty
+		if [ "$(ls -A $1)" ]; then
+			for file in $1/*
+			do
+				echo "Processing $file..."
+				ffmpeg -i $file -c copy -bsf:a aac_adtstoasc output_$file
+			done
+		else	# if it is empty
+			echo "empty directory"
+		fi
 	else
 		echo "this is not a directory"
 	fi
 elif [ $# -gt 1 ]; then
-	echo "there are more than an argument."
+	# if there is only one parameter
+	# and it does exist and is a regular file
+	if [ -f $1 ]; then
+		ffmpeg -i $1 -c copy -bsf:a aac_adtstoasc output_$1.mp4
+	fi
 elif [ $# -eq 0 ]; then
 	echo "there are no argument."
 fi
