@@ -7,10 +7,10 @@ function doFix() {
 	absolutePath=$(dirname $(readlink -f $1))
 	fileName=$(basename $1)
 
-	echo $absolutePath
-	echo $fileName
-
 	ffmpeg -i $absolutePath/$fileName -c copy -bsf:a aac_adtstoasc $absolutePath/output_$fileName
+	echo "**************************************"
+	echo "* Processed.                         *"
+	echo "**************************************"
 }
 
 # if there is only one parameter
@@ -46,3 +46,5 @@ elif [ $# -eq 0 ]; then
 	echo "there are no argument."
 fi
 
+echo "**************************************"
+echo "exiting."
