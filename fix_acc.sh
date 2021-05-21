@@ -3,6 +3,16 @@
 # script used for fixing AAC error while downloading videos using youtube-dl
 # the input can be a directory, an mp4 file or multiple mp4 files.
 
+function doFix() {
+	absolutePath=$(dirname $(readlink -f $1))
+	fileName=$(basename $1)
+
+	echo $absolutePath
+	echo $fileName
+
+	ffmpeg -i $absolutePath/$fileName -c copy -bsf:a aac_adtstoasc $absolutePath/output_$fileName
+}
+
 # if there is only one parameter
 if [ $# -eq 1 ]; then
 	if [ -d $1 ]; then
@@ -11,14 +21,14 @@ if [ $# -eq 1 ]; then
 			for file in $1/*
 			do
 				echo "Processing $file..."
-				ffmpeg -i $file -c copy -bsf:a aac_adtstoasc output_$file
+				doFix $file
 			done
 		else	# if it is empty
 			echo "empty directory"
 		fi
 	elif [ -f $1 ]; then
 		echo "Processing $1..."
-		ffmpeg -i $1 -c copy -bsf:a aac_adtstoasc output_$1
+		doFix $1
 	fi
 # if there are more than one parameter
 elif [ $# -gt 1 ]; then
@@ -27,7 +37,7 @@ elif [ $# -gt 1 ]; then
 	do
 		if [ -f $file ]; then
 			echo "Processing $file..."
-			ffmpeg -i $file -c copy -bsf:a aac_adtstoasc output_$file
+			doFix $file
 		elif [ -d file ]; then
 			echo "$file is a directory."
 		fi
