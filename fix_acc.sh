@@ -14,11 +14,11 @@ function doFix() {
 }
 
 # check if ffmpeg exists in the machine
-if [ ! command -v ffmpeg &> /dev/null ]; then
-	echo "ffmpeg is not installed."
-	exit
-fi
-
+type -P ffmpeg &>/dev/null && continue || { 
+	echo "ffmpeg command not found."
+	exit 1
+}
+ 
 # update field separator to new line to process files that have name with special characters.
 IFS=$'\n'
 
