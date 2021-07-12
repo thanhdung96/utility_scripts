@@ -13,6 +13,15 @@ function doFix() {
 	echo "**************************************"
 }
 
+# check if ffmpeg exists in the machine
+if [ ! command -v ffmpeg &> /dev/null ]; then
+	echo "ffmpeg is not installed."
+	exit
+fi
+
+# update field separator to new line to process files that have name with special characters.
+IFS=$'\n'
+
 # if there is only one parameter
 if [ $# -eq 1 ]; then
 	if [ -d $1 ]; then
