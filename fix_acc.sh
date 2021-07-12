@@ -18,7 +18,8 @@ type -P ffmpeg &>/dev/null && continue || {
 	echo "ffmpeg command not found."
 	exit 1
 }
- 
+fi
+
 # update field separator to new line to process files that have name with special characters.
 IFS=$'\n'
 
