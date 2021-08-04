@@ -7,7 +7,7 @@ function doFix() {
 	absolutePath=$(dirname $(readlink -f $1))
 	fileName=$(basename $1)
 
-	ffmpeg -i $absolutePath/$fileName -c copy -bsf:a aac_adtstoasc $absolutePath/output_$fileName
+	ffmpeg -hide_banner -loglevel quiet -i $absolutePath/$fileName -c copy -bsf:a aac_adtstoasc $absolutePath/output_$fileName
 	echo "**************************************"
 	echo "* Processed.                         *"
 	echo "**************************************"

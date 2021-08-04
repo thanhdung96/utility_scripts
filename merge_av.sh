@@ -12,9 +12,6 @@
 # 4. video ouput (directory)
 ######
 
-
-numberOfVids=0
-numberOfAudio=0
 MAX_ARG=4
 
 # actual merging function
@@ -25,14 +22,14 @@ function mergeAudioVideo() {
 	absolutePath=$(realpath $3)
 	vidFileName=$(basename $2)
 
-	ffmpeg -i $2 -i $1 -c copy $absolutePath/output_$vidFileName
+	ffmpeg -hide_banner -loglevel quiet -i $2 -i $1 -c copy $absolutePath/output_$vidFileName
 	echo "processed: output_"$vidFileName
 }
 
 # check if there are enough arguments
 if [ $# -lt $MAX_ARG ]; then
 	echo "not enough arguments."
-	echo "expecting 3 arguments, $# given."
+	echo "expecting $MAX_ARG arguments, $# given."
 	exit
 elif [ $# -gt $MAX_ARG ]; then
 	echo "too many arguments."
@@ -63,6 +60,23 @@ elif [ $1 == "-d" ] || [ $1 == "--dir" ]; then
 	if [ ! -d $2 ] || [ ! -d $3 ]; then
 		echo "the input must be directories."
 	else
-		echo "empty"
+		# list all file into array
+		lstAudio=($2/*)
+		lstVideo=($3/*)
+
+		# check for number of file equality
+		if [ ${#lstAudio[@]} -ne ${#lstVideo[@]} ]; then
+			echo "unequal number of videos and audio."
+		else
+			numberOfFiles=${#lstAudio[@]}
+
+			for ((i=0; i<$numberOfFiles; i++)); do
+				mergeAudioVideo $2 $3 $4
+			done
+		fi
 	fi
 fi
+
+echo ""
+echo "**************************************"
+echo "exiting."
