@@ -19,14 +19,10 @@ if __name__ == "__main__":
 	print("Timer written in Python 3.10")
 	totalSeconds = 0
 
-	print("Hour(s): ")
-	hours = int(input())
-	print("Minute(s): ")
-	minutes = int(input())
-	print("Seconds(s): ")
-	seconds = int(input())
-	print("Please leave a message:")
-	message = str(input())
+	hours = int(input("Hour(s): "))
+	minutes = int(input("Minute(s): "))
+	seconds = int(input("Seconds(s): "))
+	message = str(input("Please leave a message: "))
 
 	totalSeconds = seconds + minutes*60 + hours*3600
 	print("Alarm set in ", convertToTime(totalSeconds))
